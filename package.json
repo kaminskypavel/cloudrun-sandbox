@@ -5,10 +5,18 @@
   "workspaces": [
     "packages/**"
   ],
+  "scripts": {
+    "start-editor" : "lerna run --scope editor start --stream",
+    "start-backend" : "lerna run --scope backend start --stream",
+    "build": "lerna run build --stream",
+    "lint": "lerna run lint --stream --parallel"
+ },
   "repository": "git@github.com:kaminskypavel/cloudrun-editor.git",
   "author": "Pavel 'PK' Kaminsky <kaminsky.pavel@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.1.2"
   }
 }

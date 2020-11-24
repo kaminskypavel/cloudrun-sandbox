@@ -9,4 +9,4 @@ execute code cloud-run (GKE)
 
 # Todo
 
-- [] introduce [stree testing](https://github.com/loadimpact/k6)
+- [X] introduce [stress testing](https://github.com/loadimpact/k6)

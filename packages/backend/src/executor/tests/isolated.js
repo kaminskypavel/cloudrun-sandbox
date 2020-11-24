@@ -1,3 +1,5 @@
+// a script that sleeps for 5 seconds and then return result
+
 const sum = (a, b) => a + b;
 
 const func = () => {
@@ -7,4 +9,5 @@ const func = () => {
 
 const result = {result: func()}
 
-process.stdout.write(JSON.stringify(result));
+setTimeout(() => console.log(JSON.stringify(result)), 5 * 1000)
+

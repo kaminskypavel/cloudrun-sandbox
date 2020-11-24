@@ -5,7 +5,7 @@
     "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
     "compile": "tsc --build && cp \"./package.json\" ./dist/",
     "start": "ts-node-dev --respawn --rs ./src/index.ts",
-    "test:executor": "ts-node-dev --respawn --rs ./src/executor/manual.spec.ts",
+    "test:executor": "ts-node-dev --respawn --rs ./src/executor/manual.run.ts",
     "test": "jest"
   },
   "dependencies": {

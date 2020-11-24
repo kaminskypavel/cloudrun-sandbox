@@ -1,5 +1,4 @@
 export const {spawn} = require('child_process');
-const TIMEOUT = 5 * 1000;
 
 export const killChild = (child: any) => {
     if (child) {
@@ -12,7 +11,7 @@ export const killChild = (child: any) => {
 }
 
 export type Props = {
-    language: "node" | "python";
+    language: "javascript"| "node" | "python";
     scriptString?: string;
     scriptFile?: string;
 }
@@ -23,6 +22,7 @@ export const getArguments = ({language, scriptFile, scriptString}: Props) => {
 
     if (scriptString) {
         switch (language) {
+            case "javascript":
             case "node":
                 return ["-p", scriptString];
             case "python":
@@ -34,59 +34,65 @@ export const getArguments = ({language, scriptFile, scriptString}: Props) => {
 }
 
 
-export const runScript = (props: Props) => {
-    const {language, scriptFile, scriptString} = props;
+export const runScript = (props: Props, timeout = 5 * 1000) => {
+    return new Promise((resolve, rej) => {
+        const {language, scriptFile, scriptString} = props;
 
-    let child: any = null;
+        let child: any = null;
 
-    if (!scriptFile && !scriptString) {
-        throw new Error("script string/path is not provided");
-    }
-
-    const flag = getArguments(props);
-
-    console.debug("running", language, flag);
-
-    child = spawn(language,
-        flag,
-        {cwd: __dirname});
-
-
-    setTimeout(() => {
-        console.log("⌚ TIMEOUT");
-        killChild(child);
-    }, TIMEOUT)
-
-    // result
-    child.stdout.on('data', (data: string) => {
-        console.log("process finished");
-        console.log(`stdout:\n${data} `);
-
-    });
-
-//
-    child.stderr.on('stderr', (data: string) => {
-        console.error(`stderr: ${data}`);
-        killChild(child);
-    });
-
-    child.on('error', (error: Error) => {
-        console.error(`Failed to start subprocess: ${error.message}`);
-        killChild(child);
-    });
-
-    child.on('close', (code: number) => {
-        if (code !== 0) {
-            console.log(`child process exited with code ${code}`);
-        } else {
-            child = null;
+        if (!scriptFile && !scriptString) {
+            throw new Error("script string/path is not provided");
         }
-    });
 
-    // on exit remove refrence to child as it dead
-    child.on('exit', function (code: number) {
-        child = null;
-    });
+        const flag = getArguments(props);
+
+        child = spawn(language,
+            flag,
+            {cwd: __dirname});
 
 
+        setTimeout(() => {
+            const isAlive = child !== null;
+
+            if (isAlive) {
+                killChild(child);
+                throw new Error("process has timed out");
+            }
+
+        }, timeout)
+
+        // result
+        child.stdout.on('data', (data: string) => {
+            // console.log("process finished ✅");
+            // console.log(`stdout:\n${data} `);
+            resolve(data.toString().trim())
+        });
+
+        child.stderr.on('stderr', (data: string) => {
+            killChild(child);
+            // console.error(`stderr: ${data}`);
+            throw new Error(`stderr: ${data}`);
+        });
+
+        child.on('error', (error: Error) => {
+
+            killChild(child);
+            // console.error(`Failed to start subprocess: ${error.message}`);
+            throw new Error(`Failed to start subprocess: ${error.message}`);
+        });
+
+        child.on('close', (code: number) => {
+            if (code !== 0) {
+                // console.log(`child process exited with code ${code}`);
+                throw new Error(`child process exited with code ${code}`);
+            } else {
+                child = null;
+            }
+        });
+
+        // on exit remove refrence to child as it dead
+        child.on('exit', function (code: number) {
+            child = null;
+        });
+    })
 }

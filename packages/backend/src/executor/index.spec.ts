@@ -1,4 +1,6 @@
-import {getArguments, killChild} from "./";
+import {getArguments, runScript} from "./";
+
+jest.setTimeout(30 * 1000);
 
 describe('executor.ts', () => {
     describe('#getArguments', () => {
@@ -16,6 +18,33 @@ describe('executor.ts', () => {
 
         it('should return script path for node', () => {
             expect(getArguments({language: "node", scriptFile: "some-script.js"})).toStrictEqual(["some-script.js"])
+        });
+    });
+
+    describe('#runScript', () => {
+        describe('python', () => {
+            it('should return a value from stdout from file', async () => {
+                const res = await runScript({language: "python", scriptFile: "tests/isolated.py"});
+                expect(res).toEqual("{result: [1,2,3]}")
+            });
+
+            it('should throw after 5 sec', async () => {
+                expect(runScript({language: "python", scriptFile: "tests/timeout.py"})).rejects.toThrow()
+            });
+        });
+
+        describe('javascript', () => {
+            it('should return a value from stdout from file', async () => {
+                const res = await runScript({language: "node", scriptFile: "tests/isolated.js"}, 1000 * 10);
+                expect(res).toEqual("{\"result\":[1,2,3]}")
+            });
+
+            it('should throw because of timeout after 2 sec', async () => {
+                expect(runScript({
+                    language: "node",
+                    scriptFile: "tests/isolated.js"
+                }, 2 * 1000)).rejects.toThrow("process has timed out")
+            });
         });
     });
 });

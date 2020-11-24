@@ -6,3 +6,7 @@ execute code cloud-run (GKE)
 - Deploy `packages/backend` to cloud run 
 - `yarn start-editor`
 - use the endpoint from step 1
+
+# Todo
+
+- [] introduce [stree testing](https://github.com/loadimpact/k6)

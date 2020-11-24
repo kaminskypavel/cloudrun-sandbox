@@ -1,0 +1,14 @@
+{
+  "name": "cloudrun-editor",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/**"
+  ],
+  "repository": "git@github.com:kaminskypavel/cloudrun-editor.git",
+  "author": "Pavel 'PK' Kaminsky <kaminsky.pavel@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}

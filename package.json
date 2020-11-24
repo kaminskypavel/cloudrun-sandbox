@@ -5,12 +5,15 @@
   "workspaces": [
     "packages/**"
   ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "scripts": {
-    "start-editor" : "lerna run --scope @cre/editor start --stream",
-    "start-backend" : "lerna run --scope @cre/backend start --stream",
+    "start-editor": "lerna run --scope @cre/editor start --stream",
+    "start-backend": "lerna run --scope @cre/backend start --stream",
     "build": "lerna run build --stream",
     "lint": "lerna run lint --stream --parallel"
- },
+  },
   "repository": "git@github.com:kaminskypavel/cloudrun-editor.git",
   "author": "Pavel 'PK' Kaminsky <kaminsky.pavel@gmail.com>",
   "license": "MIT",

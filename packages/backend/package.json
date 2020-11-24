@@ -4,7 +4,9 @@
   "scripts": {
     "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
     "compile": "tsc --build && cp \"./package.json\" ./dist/",
-    "start": "ts-node-dev --respawn --rs ./src/index.ts"
+    "start": "ts-node-dev --respawn --rs ./src/index.ts",
+    "test:executor": "ts-node-dev --respawn --rs ./src/executor/manual.spec.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@babel/cli": "^7.12.8",
@@ -20,6 +22,8 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.4.4",
     "ts-node-dev": "^1.0.0",
     "typescript": "^4.1.2"
   }

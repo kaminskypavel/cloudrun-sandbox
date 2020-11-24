@@ -35,6 +35,10 @@ const Toolbar = () => {
 
         <Divider orientation="center"/>
         <Row gutter={16}>
+            <Col className="gutter-row" span={6}>
+                <Button type="primary"  onClick={runCode}>Execute</Button>
+            </Col>
+
             <Col className="gutter-row" span={3}>
 
                 <Switch defaultChecked onChange={changeTheme}
@@ -51,9 +55,6 @@ const Toolbar = () => {
                 >
                     {snippets.map(s => <Option key={s.language} value={s.name}>{s.name}</Option>)}
                 </Select>
-            </Col>
-            <Col className="gutter-row" span={10}>
-                <Button onClick={runCode}>Run Code</Button>
             </Col>
 
         </Row>

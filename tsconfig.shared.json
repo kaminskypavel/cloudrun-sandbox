@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": "./packages",
+    "paths": {
+      "@ce/editor/*": ["edtior/src/*"],
+      "@ce/backend/*": ["backend/src/*"]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-FROM node:14.15.1-alpine
+FROM kaminskypavel/alpine-multi-lang
 
 WORKDIR /app
 COPY *.json /app/

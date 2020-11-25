@@ -1,4 +1,4 @@
 ## Docker Multi Language Image
 
 ### Purpose 
-this images is going to execute the sandboxed code in Gvisor 
+a sandbox image to execute on a Gvisor for runing user generated code 

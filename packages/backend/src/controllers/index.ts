@@ -10,12 +10,14 @@ export const evaluateCode = async (req: Request, res: Response, next: NextFuncti
 
             res.send({
                 status: "ok",
-                data: evaluatedResult
+                data: evaluatedResult,
+                timestamp: new Date().toISOString()
             })
         } catch (e) {
             res.send({
                 status: "error",
-                error: e
+                error: e,
+                timestamp: new Date().toISOString()
             })
         }
     } catch (e) {

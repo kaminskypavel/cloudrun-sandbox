@@ -13,6 +13,33 @@ const data = execSync("ls") .toString();
 console.log(data);`
     },
     {
+        name: "javascript - recursive ls",
+        language: "javascript",
+        value: `"use strict";
+
+const  fs = require("fs");
+const PATH = "./../../";
+
+var path = process.cwd();
+var files = [];
+
+var getFiles = function (path, files) {
+  fs.readdirSync(path).forEach(function (file) {
+    var subpath = path + "/" + file;
+
+    if (fs.lstatSync(subpath).isDirectory()) {
+      getFiles(subpath, files);
+    } else {
+      files.push(path + "/" + file);
+    }
+  });
+};
+
+getFiles(PATH, files);
+console.log(JSON.stringify(files));
+`
+    },
+    {
         name: "python - simple",
         language: "python",
         value: `print("hello")`
@@ -33,6 +60,31 @@ time.sleep(20*1000)
 print("this will never be printed")
 `
     },
+    {
+        name: "typescript - filesystem",
+        language: "javascript",
+        value: `//transpiled wuth babel https://babeljs.io/en/repl
+
+/*
+    import fs from "fs"
+
+    const res:string = fs.readdirSync(".")
+    console.log(res)
+*/
+
+"use strict";
+
+var _fs = _interopRequireDefault(require("fs"));
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+const res = _fs.default.readdirSync(".");
+
+console.log(res);
+`
+    }
 
 ]
 

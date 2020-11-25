@@ -7,7 +7,7 @@ export const evaluateCode = async (req: Request, res: Response, next: NextFuncti
 
         try {
             const evaluatedResult = await runScript({language, scriptString})
-            console.log(1,evaluatedResult);
+
             res.send({
                 status: "ok",
                 data: evaluatedResult

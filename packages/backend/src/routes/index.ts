@@ -1,29 +1,29 @@
-import express, {Request, Response} from 'express'
+import express, {NextFunction, Request, Response} from 'express'
+import {body, validationResult} from 'express-validator';
 import {evaluateCode} from "../controllers";
+import {SUPPORTED_LANGUAGES} from "../executor";
 
 const router = express.Router();
 
-router.get('/ping', function (req: Request, res: Response) {
+const validator = (req: Request, res: Response, next: NextFunction) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+
+    next();
+}
+
+router.get('/ping', (req: Request, res: Response) => {
     res.send('pong')
 })
 
-router.post('/eval', function (req, res) {
-    const {script} = req.body;
-    try {
-        const evalResponse = evaluateCode(script);
-        console.log(evalResponse);
-        res.send({
-            status: "ok",
-            data: evalResponse
-        })
-    } catch (e) {
-        console.log(e);
-        res.send({
-            status: "error",
-            error: e
-        })
-    }
-})
+router.post('/eval', [
+    body('language').isIn(SUPPORTED_LANGUAGES),
+    body('script').notEmpty()
+], validator, evaluateCode)
 
 
 export default router;

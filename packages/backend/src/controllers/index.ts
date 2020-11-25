@@ -1,11 +1,24 @@
-import {transformSync} from "@babel/core";
+import {runScript} from "./../executor"
+import {NextFunction, Request, Response} from 'express'
 
-export const transpileToES5 = (script: string) => transformSync(script, {});
-export const wrapCode = (script: string) => `function __function() { ${script} }; (()=> { __function()})`
+export const evaluateCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {script: scriptString, language} = req.body;
 
-export const evaluateCode = (script: string) => {
-    // const wrappedScript = wrapCode(script);
-    const wrappedScript = script;
-    const es5Code = transpileToES5(wrappedScript)?.code || "";
-    return eval(es5Code)
+        try {
+            const evaluatedResult = await runScript({language, scriptString})
+            res.send({
+                status: "ok",
+                data: evaluatedResult
+            })
+        } catch (e) {
+            console.log(111111111,e);
+            res.send({
+                status: "error",
+                error: e
+            })
+        }
+    } catch (e) {
+
+    }
 }

@@ -35,3 +35,5 @@ make sure gutils are installed
 
 # Todo
 - [X] introduce [stress testing](https://github.com/loadimpact/k6)
+- [X] [backend] add helm protection on overuse
+- [X] [backend] improve intra-process communication (currently done with stdout)

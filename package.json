@@ -1,5 +1,5 @@
 {
-  "name": "cloudrun-editor",
+  "name": "cloudrun-sandbox",
   "version": "1.0.0",
   "private": true,
   "workspaces": [

@@ -15,7 +15,7 @@ execute user generated code on cloud-run (GKE)
 
 make sure gutils are installed
 ### Build the multi-lang-img
-- `cd packages/backend/multi-lang-img`
+- `cd multi-lang-img`
 - `gcloud builds submit --tag gcr.io/<PROJECT-NAME>/cloud-sandbox/multi-lang-img`
 
 ## Upload Backend Server

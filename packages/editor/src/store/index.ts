@@ -35,6 +35,7 @@ class Store {
     @action
     setSnippetName(value: string) {
         this.snippetName = value;
+        this.setEditorValue(this.selectedSnippet.value)
     }
 
     @action

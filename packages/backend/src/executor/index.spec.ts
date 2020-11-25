@@ -1,4 +1,4 @@
-import {getArguments, runScript} from "./";
+import {getArguments, runScript, sanitizeLanguage} from "./";
 
 jest.setTimeout(30 * 1000);
 
@@ -19,6 +19,24 @@ describe('executor.ts', () => {
         it('should return script path for node', () => {
             expect(getArguments({language: "node", scriptFile: "some-script.js"})).toStrictEqual(["some-script.js"])
         });
+    });
+
+    describe('#sanitizeLanguage', () => {
+        it('should node for all javascript', () => {
+            expect(sanitizeLanguage("javascript")).toEqual("node");
+            expect(sanitizeLanguage("typescript")).toEqual("node");
+            expect(sanitizeLanguage("node")).toEqual("node");
+        });
+
+        it('should node for all python', () => {
+            expect(sanitizeLanguage("python")).toEqual("python");
+            expect(sanitizeLanguage("python3")).toEqual("python");
+        });
+
+        it('should throw for unspported language', () => {
+            expect(() => sanitizeLanguage("unknown")).toThrow("unknown programming language unknown");
+        });
+
     });
 
     describe('#runScript', () => {

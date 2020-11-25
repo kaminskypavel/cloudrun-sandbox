@@ -12,7 +12,6 @@ export const evaluateCode = async (req: Request, res: Response, next: NextFuncti
                 data: evaluatedResult
             })
         } catch (e) {
-            console.log(111111111,e);
             res.send({
                 status: "error",
                 error: e

@@ -1,4 +1,4 @@
-export  const SUPPORTED_LANGUAGES = ["javascript" , "node" , "python"];
+export const SUPPORTED_LANGUAGES = ["javascript", "node", "python"];
 
 export const {spawn} = require('child_process');
 
@@ -37,6 +37,22 @@ export const getArguments = ({language, scriptFile, scriptString}: Props) => {
     }
 }
 
+export const sanitizeLanguage = (language: string) => {
+    switch (language) {
+        case "javascript":
+        case "typescript":
+        case "node":
+            return "node"
+
+        case "python":
+        case "python3":
+            return "python"
+
+        default:
+            throw new Error(`unknown programming language ${language}`)
+    }
+}
+
 
 export const runScript = (props: Props, timeout = 5 * 1000) => {
     return new Promise((resolve, reject) => {
@@ -49,7 +65,9 @@ export const runScript = (props: Props, timeout = 5 * 1000) => {
         }
 
         const flag = getArguments(props);
-        child = spawn(language,
+        const cmd = sanitizeLanguage(language);
+
+        child = spawn(cmd,
             flag,
             {cwd: __dirname});
 

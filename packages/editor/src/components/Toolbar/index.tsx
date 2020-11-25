@@ -1,33 +1,31 @@
-import {editorState, snippetSelector} from "../../atoms";
 import React, {useRef} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
 import {Button, Col, Divider, Input, Row, Select, Switch} from "antd";
 import snippets from "../../snippets";
-import axios from "axios";
-// import axios from "axios";
+import {observer} from "mobx-react-lite";
+import {useStore} from "../../hooks/useStore";
 
 const {Option} = Select;
 
 const Toolbar = () => {
-    const [state, setState] = useRecoilState(editorState);
-    const changeTheme = () => setState({...state, isDark: !state.isDark});
+    const changeTheme = () => store.setIsDarkTheme(!store.isDark);
+    const store = useStore();
 
     const changeSnippet = (value: string) => {
-        setState({...state, snippetName: value});
+        store.setSnippetName(value)
     }
-
-    const snippet = useRecoilValue(snippetSelector);
 
     const runCode = async () => {
         const url = ref.current.state.value
         console.log(url);
-        const {data} = await axios.post(url, {script: snippet.value});
-        alert(JSON.stringify(data))
+
+        // const {data} = await axios.post(url, {script: snippet.value, language: snippet.language});
+        // alert(JSON.stringify(data))
     }
 
     const ref = useRef<any>()
 
     return <div>
+        {JSON.stringify(useStore())}
         <Input ref={ref}
                addonBefore="Cloud Run Endpoint"
                placeholder=" "
@@ -36,7 +34,7 @@ const Toolbar = () => {
         <Divider orientation="center"/>
         <Row gutter={16}>
             <Col className="gutter-row" span={6}>
-                <Button type="primary"  onClick={runCode}>Execute</Button>
+                <Button type="primary" onClick={runCode}>Execute</Button>
             </Col>
 
             <Col className="gutter-row" span={3}>
@@ -51,7 +49,7 @@ const Toolbar = () => {
                     placeholder="Language"
                     optionFilterProp="children"
                     onChange={changeSnippet}
-                    defaultValue={snippet.language}
+                    defaultValue={store.language}
                 >
                     {snippets.map(s => <Option key={s.language} value={s.name}>{s.name}</Option>)}
                 </Select>
@@ -62,4 +60,4 @@ const Toolbar = () => {
     </div>
 }
 
-export default Toolbar;
+export default observer(Toolbar);

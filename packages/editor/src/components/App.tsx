@@ -2,11 +2,15 @@ import React from "react";
 import PageLayout from "./PageLayout"
 
 import "./App.css";
-import { RecoilRoot } from "recoil";
+import {RecoilRoot} from "recoil";
+import {StoreContext} from '../context';
+import store from '../store';
 
-const App = () => 
+const App = () =>
     <RecoilRoot>
-        <PageLayout/>
+        <StoreContext.Provider value={store}>
+            <PageLayout/>
+        </StoreContext.Provider>
     </RecoilRoot>
 
 export default App;

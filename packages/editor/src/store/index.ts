@@ -1,11 +1,13 @@
 import {action, computed, makeAutoObservable} from "mobx";
 import snippets from "../snippets";
+import axios from "axios";
 
 class Store {
     snippetName: string = snippets[0].name;
     isDark: boolean = true;
     editorValue: string = "";
     evaluated: string = "";
+    endpoint:string = "http://localhost:8080/eval"
 
     constructor() {
         makeAutoObservable(this)
@@ -23,7 +25,6 @@ class Store {
 
     @action
     setEditorValue(value: string) {
-        console.log(1,value);
         this.editorValue = value;
     }
 
@@ -41,6 +42,20 @@ class Store {
     @action
     setIsDarkTheme(value: boolean) {
         this.isDark = value;
+    }
+
+    @action
+    setEndpoint(value: string) {
+        this.endpoint = value;
+    }
+
+    @action
+    async execute() {
+        console.log(11,"execute");
+        const {data} = await axios.post(this.endpoint, {script: this.editorValue, language: this.language});
+        console.log(22,data);
+        this.setEvaluated(JSON.stringify(data, null, 4))
+
     }
 
 }

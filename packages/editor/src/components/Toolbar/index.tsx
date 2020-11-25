@@ -3,7 +3,6 @@ import {Button, Col, Divider, Input, Row, Select, Switch} from "antd";
 import snippets from "../../snippets";
 import {observer} from "mobx-react-lite";
 import {useStore} from "../../hooks/useStore";
-import axios from "axios";
 
 const {Option} = Select;
 
@@ -15,19 +14,18 @@ const Toolbar = () => {
         store.setSnippetName(value)
     }
 
-    const runCode = async () => {
-        const url = ref.current.state.value
-        const {data} = await axios.post(url, {script: store.editorValue, language: store.language});
-        store.setEvaluated(JSON.stringify(data, null, 4))
-    }
+    const runCode = async () =>
+        store.execute()
+
 
     const ref = useRef<any>()
 
     return <div>
         <Input ref={ref}
+               onChange={(e) => store.setEndpoint(e.target.value)}
                addonBefore="Cloud Run Endpoint"
                placeholder=" "
-               defaultValue="http://localhost:8080/eval"/>
+               defaultValue={store.endpoint}/>
 
         <Divider orientation="center"/>
         <Row gutter={16}>

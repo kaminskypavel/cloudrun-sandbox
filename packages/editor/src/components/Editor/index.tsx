@@ -9,8 +9,12 @@ const EditorComp = () => {
     const store = useStore();
     const valueGetter = useRef<any>()
 
-    const editorDidMount = (_valueGetter: any) => {
+    const editorDidMount = (_valueGetter: any,editor:any) => {
         valueGetter.current = _valueGetter;
+        // Ctrl + Enter
+        editor.addCommand( 2048 | 3 ,() => {
+            store.execute().then()
+        })
     }
 
     return <div>

@@ -1,3 +1,5 @@
+export  const SUPPORTED_LANGUAGES = ["javascript" , "node" , "python"];
+
 export const {spawn} = require('child_process');
 
 export const killChild = (child: any) => {
@@ -10,8 +12,10 @@ export const killChild = (child: any) => {
     }
 }
 
+export type SupportedLanguages = (typeof SUPPORTED_LANGUAGES)[number];
+
 export type Props = {
-    language: "javascript"| "node" | "python";
+    language: SupportedLanguages;
     scriptString?: string;
     scriptFile?: string;
 }
@@ -35,7 +39,7 @@ export const getArguments = ({language, scriptFile, scriptString}: Props) => {
 
 
 export const runScript = (props: Props, timeout = 5 * 1000) => {
-    return new Promise((resolve, rej) => {
+    return new Promise((resolve, reject) => {
         const {language, scriptFile, scriptString} = props;
 
         let child: any = null;
@@ -45,7 +49,6 @@ export const runScript = (props: Props, timeout = 5 * 1000) => {
         }
 
         const flag = getArguments(props);
-
         child = spawn(language,
             flag,
             {cwd: __dirname});
@@ -56,35 +59,36 @@ export const runScript = (props: Props, timeout = 5 * 1000) => {
 
             if (isAlive) {
                 killChild(child);
-                throw new Error("process has timed out");
+                reject("process has timed out");
             }
 
         }, timeout)
 
-        // result
+        // the only positive outcome
         child.stdout.on('data', (data: string) => {
             // console.log("process finished ✅");
             // console.log(`stdout:\n${data} `);
             resolve(data.toString().trim())
         });
 
+        // all from here are errors runing the code
         child.stderr.on('stderr', (data: string) => {
             killChild(child);
             // console.error(`stderr: ${data}`);
-            throw new Error(`stderr: ${data}`);
+            reject(`stderr: ${data}`);
         });
 
         child.on('error', (error: Error) => {
 
             killChild(child);
             // console.error(`Failed to start subprocess: ${error.message}`);
-            throw new Error(`Failed to start subprocess: ${error.message}`);
+            reject(`Failed to start subprocess: ${error.message}`);
         });
 
         child.on('close', (code: number) => {
             if (code !== 0) {
                 // console.log(`child process exited with code ${code}`);
-                throw new Error(`child process exited with code ${code}`);
+                reject(`child process exited with code ${code}`);
             } else {
                 child = null;
             }

@@ -29,7 +29,10 @@ describe('executor.ts', () => {
             });
 
             it('should throw after 5 sec', async () => {
-                expect(runScript({language: "python", scriptFile: "tests/timeout.py"})).rejects.toThrow()
+                await expect(runScript({
+                    language: "python",
+                    scriptFile: "tests/timeout.py"
+                }, 5 * 1000)).rejects.toEqual("process has timed out")
             });
         });
 
@@ -40,10 +43,10 @@ describe('executor.ts', () => {
             });
 
             it('should throw because of timeout after 2 sec', async () => {
-                expect(runScript({
+                await expect(runScript({
                     language: "node",
                     scriptFile: "tests/isolated.js"
-                }, 2 * 1000)).rejects.toThrow("process has timed out")
+                }, 2 * 1000)).rejects.toEqual("process has timed out")
             });
         });
     });

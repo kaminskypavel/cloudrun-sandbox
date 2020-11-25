@@ -77,7 +77,7 @@ export const runScript = (props: Props, timeout = 5 * 1000) => {
 
             if (isAlive) {
                 killChild(child);
-                reject("process has timed out");
+                reject(`process has timed out after ${timeout/1000} seconds`);
             }
 
         }, timeout)

@@ -9,8 +9,8 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "start-editor": "lerna run --scope @cre/editor start --stream",
-    "start-backend": "lerna run --scope @cre/backend start --stream",
+    "start-editor": "lerna run --scope editor start --stream",
+    "start-backend": "lerna run --scope backend start --stream",
     "build": "lerna run build --stream",
     "lint": "lerna run lint --stream --parallel"
   },

@@ -6,6 +6,7 @@
     "build": "yarn clean && tsc",
     "compile": "tsc --build && cp \"./package.json\" ./dist/",
     "start": "ts-node-dev --respawn --rs ./src/index.ts",
+    "start:prod": "node build/index.js",
     "test:executor": "ts-node-dev --respawn --rs ./src/executor/manual.run.ts",
     "test": "jest"
   },
